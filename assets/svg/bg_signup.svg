@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="412" height="870" viewBox="0 0 412 870">
+  <defs>
+    <clipPath id="clip-bg_signup">
+      <rect width="412" height="870"/>
+    </clipPath>
+  </defs>
+  <g id="bg_signup" clip-path="url(#clip-bg_signup)">
+    <rect width="412" height="870" fill="#fff"/>
+    <g id="Group_77" data-name="Group 77">
+      <g id="Group_73" data-name="Group 73">
+        <rect id="Rectangle_29" data-name="Rectangle 29" width="412" height="870" fill="#222831"/>
+        <g id="Group_50" data-name="Group 50" transform="translate(-35.955 435)">
+          <path id="Path_3192" data-name="Path 3192" d="M544.863,262.515a38.261,38.261,0,0,0,38.261-38.261V182.678a38.261,38.261,0,1,0-76.522,0v41.576A38.261,38.261,0,0,0,544.863,262.515Z" transform="translate(-506.602 -18.923)" fill="#ff5722"/>
+          <path id="Path_3193" data-name="Path 3193" d="M635.812,348.853a38.261,38.261,0,0,0,38.261-38.261v-41.83a38.261,38.261,0,1,0-76.522,0v41.806a38.26,38.26,0,0,0,38.235,38.286Z" transform="translate(-465.475 20.004)" fill="#ff5722"/>
+          <path id="Path_3194" data-name="Path 3194" d="M635.812,270.5a38.261,38.261,0,0,0,38.261-38.261V96.261a38.261,38.261,0,1,0-76.522,0V232.238A38.261,38.261,0,0,0,635.812,270.5Z" transform="translate(-465.475 -58)" fill="#00adb5"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
