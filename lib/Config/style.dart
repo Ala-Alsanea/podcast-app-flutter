@@ -30,14 +30,14 @@ TextStyle normal_18({color = white}) => TextStyle(
       color: color,
     );
 
-TextStyle normal_16({color = white}) => TextStyle(
-      fontSize: 16,
-      fontWeight: FontWeight.normal,
-      color: color,
-    );
-
 TextStyle bold_18({color = white}) => TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.bold,
+      color: color,
+    );
+
+TextStyle normal_16({color = white}) => TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.normal,
       color: color,
     );

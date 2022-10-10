@@ -72,20 +72,25 @@ class _HomePageState extends State<HomePage> {
               Text('Favorite', style: bold_18()),
               Expanded(
                 child: GridView.builder(
+                  padding: EdgeInsets.symmetric(vertical: 20),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2),
                   itemCount: 20,
                   itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: TextButton(
+                    return TextButton(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 0),
                         child: Column(
                           children: [
-                            Image.asset('assets/img/temp_img.png'),
+                            Image.asset('assets/img/temp_img.png',
+                                height: getHeight(120)),
+                            SizedBox(height: getHeight(5)),
+                            Text('datadatadatadata', style: normal_16()),
+                            RichText(text: TextSpan(text: 'datadatadata')),
                           ],
                         ),
-                        onPressed: () {},
                       ),
+                      onPressed: () {},
                     );
                   },
                 ),
