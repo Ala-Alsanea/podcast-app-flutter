@@ -8,9 +8,11 @@ import '../size_config.dart';
 Widget text_input(
   BuildContext context,
   String holder, {
+  Color color = dark100,
   bool passwd = false,
   IconData? icon,
   IconButton? iconButton,
+  TextEditingController? controller,
   TextInputType? keyboardType,
   String? Function(String?)? validator,
   Function()? press,
@@ -19,8 +21,9 @@ Widget text_input(
   SizeOfConfig().init(context);
 
   return Container(
-    padding: const EdgeInsets.symmetric(horizontal: 0),
+    padding: EdgeInsets.only(left: icon != null ? 0 : 9),
     child: TextFormField(
+      controller: controller,
       onTap: press,
       onChanged: onChanged,
       validator: validator,
@@ -31,17 +34,14 @@ Widget text_input(
         focusColor: Colors.grey[300],
         border: InputBorder.none,
         hintText: holder,
-        hintStyle: TextStyle(color: white),
-        prefixIcon: Icon(
-          icon,
-          color: white,
-        ),
-        prefixIconColor: white,
+        hintStyle: normal_18(),
+        prefixIcon: icon != null ? Icon(icon, color: white) : null,
         suffixIcon: iconButton,
+        // suffixIconColor: white,
       ),
     ),
     decoration: BoxDecoration(
-      color: dark100,
+      color: color,
       borderRadius: BorderRadius.circular(10),
     ),
   );

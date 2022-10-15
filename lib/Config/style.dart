@@ -41,3 +41,9 @@ TextStyle normal_16({color = white}) => TextStyle(
       fontWeight: FontWeight.normal,
       color: color,
     );
+
+TextStyle bold_16({color = white}) => TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      color: color,
+    );

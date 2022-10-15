@@ -7,18 +7,17 @@ import 'package:podcast_app/Config/components/login_signin_stuff.dart';
 import 'package:podcast_app/Config/components/text_input.dart';
 import 'package:podcast_app/Config/size_config.dart';
 import 'package:podcast_app/Config/style.dart';
-import 'package:podcast_app/Screen/home_page.dart';
+import 'package:podcast_app/Screen/login_page.dart';
 import 'package:podcast_app/Screen/main_page.dart';
-import 'package:podcast_app/Screen/signin_page.dart';
 
-class LoginPage extends StatefulWidget {
-  LoginPage({Key? key}) : super(key: key);
+class SignInPage extends StatefulWidget {
+  SignInPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignInPage> createState() => _SignInPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignInPageState extends State<SignInPage> {
   //var
   dynamic formKey = GlobalKey<FormState>();
 
@@ -49,22 +48,34 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(height: getHeight(50)),
 
                     // img
-                    Center(
-                      child: Container(
-                        child: SvgPicture.asset('assets/svg/logo.svg'),
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text('Sign in', style: bold_24()),
+                        Container(
+                          child: SvgPicture.asset('assets/svg/logo.svg',
+                              width: 70),
+                        ),
+                      ],
                     ),
-
-                    SizedBox(height: getHeight(50)),
-
-                    //login header
-                    Text('Login', style: bold_24()),
 
                     SizedBox(height: getHeight(20)),
 
-                    //username field
+                    //login header
+
+                    SizedBox(height: getHeight(20)),
+                    // fields
                     Column(
                       children: [
+                        //username field
+
+                        text_input(context, 'Username',
+                            color: blue, icon: Icons.person),
+
+                        SizedBox(height: getHeight(40)),
+
+                        // email field
                         text_input(context, 'Email Address',
                             color: blue, icon: Icons.email),
 
@@ -77,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                           'Password',
                           color: blue,
                           passwd: passwdHidden,
-                          icon: Icons.lock,
+                          icon: Icons.password,
                           iconButton: IconButton(
                             onPressed: () {
                               setState(() {
@@ -90,6 +101,15 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
+                        SizedBox(height: getHeight(40)),
+
+                        text_input(
+                          context,
+                          'Re-Password',
+                          color: blue,
+                          icon: Icons.password,
+                          passwd: passwdHidden,
+                        ),
                       ],
                     ),
 
@@ -101,29 +121,29 @@ class _LoginPageState extends State<LoginPage> {
                         function: () {
                           if (formKey.currentState.validate()) {
                             setState(() {
-                              Navigator.of(context).push(
+                              Navigator.pushReplacement(
+                                context,
                                 MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                  return MainPage();
-                                }),
+                                    builder: (BuildContext context) =>
+                                        MainPage()),
                               );
                             });
                           }
                         }),
 
-                    SizedBox(height: getHeight(100)),
+                    SizedBox(height: getHeight(60)),
 
                     // sign in now
                     Footer(
                       context,
-                      text: "I don't have an account !!",
-                      btnText: 'Sign in now',
+                      text: "I already have an account !!",
+                      btnText: 'Login',
                       function: () {
                         setState(() {
-                          Navigator.pushReplacement(
+                          Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => SignInPage(),
+                                builder: (context) => LoginPage(),
                               ));
                         });
                       },

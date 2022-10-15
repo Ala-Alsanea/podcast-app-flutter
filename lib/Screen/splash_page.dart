@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:podcast_app/Config/size_config.dart';
 import 'package:podcast_app/Screen/home_page.dart';
+import 'package:podcast_app/Screen/login_page.dart';
+import 'package:podcast_app/Screen/main_page.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -15,12 +17,12 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   // function
 
-  void _toNextPage() {
-    Future.delayed(Duration(seconds: 1000), () {});
+  void _toNextPage() async {
+    await Future.delayed(Duration(milliseconds: 2600), () {});
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => HomePage(),
+        builder: (context) => LoginPage(),
       ),
     );
   }
@@ -39,7 +41,7 @@ class _SplashPageState extends State<SplashPage> {
     return Scaffold(
       body: Center(
         child: Container(
-          child: Image.asset('assets/img/temp_img.png'),
+          child: SvgPicture.asset('assets/svg/splash.svg', fit: BoxFit.cover),
         ),
       ),
     );

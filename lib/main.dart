@@ -1,10 +1,11 @@
-// ignore_for_file: unused_import
+// ignore_for_file: unused_import, prefer_const_constructors
 
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:podcast_app/Screen/explore_page.dart';
 import 'package:podcast_app/Screen/login_page.dart';
 import 'package:podcast_app/Screen/main_page.dart';
+import 'package:podcast_app/Screen/splash_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,9 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-
-      // ignore: prefer_const_constructors
-      home: LoginPage(),
+      home: SplashPage(),
     );
   }
 }
