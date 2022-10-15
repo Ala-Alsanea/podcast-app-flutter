@@ -3,6 +3,7 @@
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:podcast_app/Screen/explore_page.dart';
+import 'package:podcast_app/Screen/login_page.dart';
 import 'package:podcast_app/Screen/main_page.dart';
 
 void main() {
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
 
       // ignore: prefer_const_constructors
-      home: MainPage(),
+      home: LoginPage(),
     );
   }
 }
