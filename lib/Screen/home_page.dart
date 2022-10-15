@@ -10,7 +10,9 @@ import 'package:podcast_app/Config/size_config.dart';
 import 'package:podcast_app/Config/style.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+  HomePage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
