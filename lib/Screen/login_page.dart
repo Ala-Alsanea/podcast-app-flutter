@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/svg.dart';
+import 'package:podcast_app/Config/components/FromError.dart';
 import 'package:podcast_app/Config/components/login_signin_stuff.dart';
 import 'package:podcast_app/Config/components/text_input.dart';
 import 'package:podcast_app/Config/size_config.dart';
@@ -10,6 +11,7 @@ import 'package:podcast_app/Config/style.dart';
 import 'package:podcast_app/Screen/home_page.dart';
 import 'package:podcast_app/Screen/main_page.dart';
 import 'package:podcast_app/Screen/signin_page.dart';
+import 'package:podcast_app/Config/validation_error_msg.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -21,6 +23,25 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   //var
   dynamic formKey = GlobalKey<FormState>();
+  final List<String?> errors = [];
+
+// function
+
+  void addError({String? error}) {
+    if (!errors.contains(error)) {
+      setState(() {
+        errors.add(error);
+      });
+    }
+  }
+
+  void removeError({String? error}) {
+    if (errors.contains(error)) {
+      setState(() {
+        errors.remove(error);
+      });
+    }
+  }
 
 //build
   @override
@@ -46,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   // ignore: prefer_const_literals_to_create_immutables
                   children: [
-                    SizedBox(height: getHeight(50)),
+                    SizedBox(height: getHeight(30)),
 
                     // img
                     Center(
@@ -62,11 +83,31 @@ class _LoginPageState extends State<LoginPage> {
 
                     SizedBox(height: getHeight(20)),
 
-                    //username field
+                    // field
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        text_input(context, 'Email Address',
-                            color: blue, icon: Icons.email),
+                        text_input(
+                          context,
+                          'Email Address',
+                          color: blue,
+                          icon: Icons.email,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              addError(
+                                error: msgEmailEmpty,
+                              );
+                              return "";
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            if (value.isNotEmpty) {
+                              removeError(error: msgEmailEmpty);
+                              return "";
+                            }
+                          },
+                        ),
 
                         SizedBox(height: getHeight(40)),
 
@@ -89,6 +130,20 @@ class _LoginPageState extends State<LoginPage> {
                               color: white,
                             ),
                           ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              addError(error: msgPasswdEmpty);
+                              return "";
+                            }
+
+                            return null;
+                          },
+                          onChanged: (value) {
+                            if (value.isNotEmpty) {
+                              removeError(error: msgPasswdEmpty);
+                              return "";
+                            }
+                          },
                         ),
                       ],
                     ),
@@ -97,21 +152,26 @@ class _LoginPageState extends State<LoginPage> {
 
                     //bottom
                     BtnArea(
-                        icon: Icons.arrow_forward_ios_outlined,
-                        function: () {
-                          if (formKey.currentState.validate()) {
-                            setState(() {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) {
+                      icon: SvgPicture.asset('assets/svg/next-page-shadow.svg',
+                          width: getHeight(150)),
+                      function: () {
+                        if (formKey.currentState.validate()) {
+                          setState(() async {
+                            await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (BuildContext context) {
                                   return MainPage();
-                                }),
-                              );
-                            });
-                          }
-                        }),
+                                },
+                              ),
+                            );
+                          });
+                        }
+                      },
+                    ),
 
-                    SizedBox(height: getHeight(100)),
+                    FormError(errors: errors),
+
+                    SizedBox(height: getHeight(30)),
 
                     // sign in now
                     Footer(

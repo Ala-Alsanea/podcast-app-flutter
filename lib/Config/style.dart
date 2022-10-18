@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 const dynamic dark100 = Color(0xff0F1723);
 const dynamic dark50 = Color(0xff222831);
 const dynamic blue = Color(0xff00ADB5);
-const Color orange = Color(0xffFF5722);
+const dynamic orange = Color(0xffFF5722);
 const dynamic white = Color(0xffeeeeee);
 
 TextStyle normal_24({color = white}) {

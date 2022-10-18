@@ -15,22 +15,27 @@ Widget text_input(
   TextEditingController? controller,
   TextInputType? keyboardType,
   String? Function(String?)? validator,
-  Function()? press,
+  Function()? onTap,
   Function(String)? onChanged,
 }) {
   SizeOfConfig().init(context);
 
   return Container(
+    // height: getHeight(0),
     padding: EdgeInsets.only(left: icon != null ? 0 : 9),
     child: TextFormField(
+      maxLength: 50,
       controller: controller,
-      onTap: press,
+      onTap: onTap,
       onChanged: onChanged,
       validator: validator,
       keyboardType: keyboardType,
       style: TextStyle(fontSize: 18, color: white),
+      expands: false,
       obscureText: passwd,
       decoration: InputDecoration(
+        errorMaxLines: null,
+        errorBorder: InputBorder.none,
         focusColor: Colors.grey[300],
         border: InputBorder.none,
         hintText: holder,

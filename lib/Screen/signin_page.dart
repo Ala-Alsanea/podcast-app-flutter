@@ -3,10 +3,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/svg.dart';
+import 'package:podcast_app/Config/components/FromError.dart';
 import 'package:podcast_app/Config/components/login_signin_stuff.dart';
 import 'package:podcast_app/Config/components/text_input.dart';
 import 'package:podcast_app/Config/size_config.dart';
 import 'package:podcast_app/Config/style.dart';
+import 'package:podcast_app/Config/validation_error_msg.dart';
 import 'package:podcast_app/Screen/login_page.dart';
 import 'package:podcast_app/Screen/main_page.dart';
 
@@ -20,6 +22,28 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   //var
   dynamic formKey = GlobalKey<FormState>();
+  final List<String?> errors = [];
+  final _emailCtrl = TextEditingController();
+  final _usernameCtrl = TextEditingController();
+  final _passwdCtrl = TextEditingController();
+  final _rePasswdCtrl = TextEditingController();
+
+// function
+  void addError({String? error}) {
+    if (!errors.contains(error)) {
+      setState(() {
+        errors.add(error);
+      });
+    }
+  }
+
+  void removeError({String? error}) {
+    if (errors.contains(error)) {
+      setState(() {
+        errors.remove(error);
+      });
+    }
+  }
 
 //build
   @override
@@ -45,7 +69,7 @@ class _SignInPageState extends State<SignInPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   // ignore: prefer_const_literals_to_create_immutables
                   children: [
-                    SizedBox(height: getHeight(50)),
+                    SizedBox(height: getHeight(10)),
 
                     // img
                     Row(
@@ -70,14 +94,50 @@ class _SignInPageState extends State<SignInPage> {
                       children: [
                         //username field
 
-                        text_input(context, 'Username',
-                            color: blue, icon: Icons.person),
+                        text_input(
+                          context,
+                          'Username',
+                          controller: _usernameCtrl,
+                          color: blue,
+                          icon: Icons.person,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              addError(error: msgUsernameEmpty);
+                              return '';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            if (value.isNotEmpty) {
+                              removeError(error: msgUsernameEmpty);
+                              return "";
+                            }
+                          },
+                        ),
 
                         SizedBox(height: getHeight(40)),
 
-                        // email field
-                        text_input(context, 'Email Address',
-                            color: blue, icon: Icons.email),
+                        //email field
+                        text_input(
+                          context,
+                          'Email Address',
+                          controller: _emailCtrl,
+                          color: blue,
+                          icon: Icons.email,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              addError(error: msgEmailEmpty);
+                              return '';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            if (value.isNotEmpty) {
+                              removeError(error: msgEmailEmpty);
+                              return "";
+                            }
+                          },
+                        ),
 
                         SizedBox(height: getHeight(40)),
 
@@ -86,6 +146,7 @@ class _SignInPageState extends State<SignInPage> {
                         text_input(
                           context,
                           'Password',
+                          controller: _passwdCtrl,
                           color: blue,
                           passwd: passwdHidden,
                           icon: Icons.password,
@@ -100,12 +161,34 @@ class _SignInPageState extends State<SignInPage> {
                               color: white,
                             ),
                           ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              addError(error: msgPasswdEmpty);
+                              return "";
+                            } else if (value.length < 8) {
+                              addError(error: msgPasswdLength);
+                              return "";
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            if (value.isNotEmpty) {
+                              removeError(error: msgPasswdEmpty);
+                              return "";
+                            } else if (value.length >= 8) {
+                              removeError(error: msgPasswdLength);
+                              return "";
+                            }
+                            return null;
+                          },
                         ),
+
                         SizedBox(height: getHeight(40)),
 
                         text_input(
                           context,
                           'Re-Password',
+                          controller: _rePasswdCtrl,
                           color: blue,
                           icon: Icons.password,
                           passwd: passwdHidden,
@@ -113,25 +196,33 @@ class _SignInPageState extends State<SignInPage> {
                       ],
                     ),
 
-                    SizedBox(height: getHeight(40)),
+                    SizedBox(height: getHeight(20)),
 
                     //bottom
                     BtnArea(
-                        icon: Icons.arrow_forward_ios_outlined,
-                        function: () {
-                          if (formKey.currentState.validate()) {
-                            setState(() {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        MainPage()),
-                              );
-                            });
-                          }
-                        }),
+                      icon: SvgPicture.asset('assets/svg/next-page-shadow.svg',
+                          width: getHeight(150)),
+                      function: () {
+                        print(_usernameCtrl.text);
 
-                    SizedBox(height: getHeight(60)),
+                        //
+
+                        if (formKey.currentState.validate()) {
+                          setState(() {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (BuildContext context) {
+                                  return MainPage();
+                                },
+                              ),
+                            );
+                          });
+                        }
+                      },
+                    ),
+                    FormError(errors: errors),
+
+                    SizedBox(height: getHeight(0)),
 
                     // sign in now
                     Footer(

@@ -20,7 +20,7 @@ Padding BigTitle(String title, {double size = 40}) {
 }
 
 Container BtnArea(
-    {String text = "", IconData icon = Icons.login, VoidCallback? function}) {
+    {String text = "", dynamic icon = '', VoidCallback? function}) {
   return Container(
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -36,10 +36,11 @@ Container BtnArea(
         CircleAvatar(
           backgroundColor: orange,
           // foregroundColor: Color(0xFFFFFFFF),
-          radius: 35,
-          child: IconButton(
+          radius: 40,
+
+          child: TextButton(
             onPressed: function,
-            icon: Icon(icon, size: 30, color: Color(0xFFFFFFFF)),
+            child: icon,
           ),
         ),
       ],
