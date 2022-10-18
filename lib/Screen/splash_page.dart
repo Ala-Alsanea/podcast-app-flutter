@@ -1,11 +1,13 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, avoid_unnecessary_containers
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, avoid_unnecessary_containers, prefer_interpolation_to_compose_strings, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:podcast_app/Config/size_config.dart';
 import 'package:podcast_app/Screen/home_page.dart';
 import 'package:podcast_app/Screen/login_page.dart';
 import 'package:podcast_app/Screen/main_page.dart';
+import 'package:podcast_app/localDB/userDB.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -15,14 +17,21 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  final _myBox = Hive.box('mybox');
+
   // function
 
-  void _toNextPage() async {
+  _clearDB() {
+    _myBox.delete('token');
+    _myBox.delete('user');
+  }
+
+  void _toNextPage(var page) async {
     await Future.delayed(Duration(milliseconds: 2600), () {});
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => LoginPage(),
+        builder: (context) => page,
       ),
     );
   }
@@ -30,8 +39,16 @@ class _SplashPageState extends State<SplashPage> {
   //
   @override
   void initState() {
+    // _clearDB();
+    print("tokenDB-> " + _myBox.get('token').toString());
+    print("userDB-> " + _myBox.get('user').toString());
+    if (_myBox.get('token') == null) {
+      _toNextPage(LoginPage());
+    } else {
+      _toNextPage(MainPage());
+    }
+
     super.initState();
-    _toNextPage();
   }
 
   @override

@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:podcast_app/Config/components/bottom_app_bar.dart';
 import 'package:podcast_app/Config/components/header.dart';
 import 'package:podcast_app/Config/components/search_item.dart';
@@ -12,6 +13,7 @@ import 'package:podcast_app/Config/size_config.dart';
 import 'package:podcast_app/Config/style.dart';
 import 'package:podcast_app/api/ConnectApi.dart';
 import 'package:podcast_app/api/model/podcast.dart';
+import 'package:podcast_app/localDB/userDB.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({
@@ -24,14 +26,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 // var
-
+  final _myBox = Hive.box('mybox');
+  var user = UserDB();
   var podcast = [];
   var _new = [];
 
 // fun
 
   getPodcast() {
-    ConnectApi().getAllData(entryPoint: 'allPodcasts').then((respond) {
+    ConnectApi()
+        .getAllData(entryPoint: 'allPodcasts', token: _myBox.get('token'))
+        .then((respond) {
       List list = json.decode(respond.body);
       podcast = list.map((e) => PodcastModel.fromJson(e)).toList();
       // _new = podcast.;

@@ -11,11 +11,14 @@ class ConnectApi {
     return _storageUrl;
   }
 
-  getAllData({entryPoint = ""}) async {
+  getAllData({entryPoint = "", token = ''}) async {
     print(_localUrl + entryPoint);
 
     //
-    http.Response response = await http.get(Uri.parse(_localUrl + entryPoint));
+    http.Response response = await http.get(
+      Uri.parse(_localUrl + entryPoint),
+      headers: _setHeader(token: token),
+    );
     try {
       print(response.statusCode);
       if (response.statusCode == 200) {
@@ -54,7 +57,7 @@ class ConnectApi {
     return {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      // 'Authorization': 'Bearer ' + token,
+      'Authorization': 'Bearer ' + token,
     };
   }
 }

@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/svg.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:podcast_app/Config/components/FromError.dart';
 import 'package:podcast_app/Config/components/login_signin_stuff.dart';
 import 'package:podcast_app/Config/components/text_input.dart';
@@ -15,6 +16,7 @@ import 'package:podcast_app/Screen/main_page.dart';
 import 'package:podcast_app/Screen/signin_page.dart';
 import 'package:podcast_app/Config/validation_error_msg.dart';
 import 'package:podcast_app/api/ConnectApi.dart';
+import 'package:podcast_app/localDB/userDB.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -29,6 +31,7 @@ class _LoginPageState extends State<LoginPage> {
   final emailCtrl = TextEditingController();
   final passwdCtrl = TextEditingController();
   final List<String?> errors = [];
+  final _myBox = Hive.box('mybox');
 
 // function
 
@@ -53,14 +56,25 @@ class _LoginPageState extends State<LoginPage> {
       'email': emailCtrl.text,
       'password': passwdCtrl.text,
     };
-
+// make post request
     var response = await ConnectApi().postData(data: data, entryPoint: 'login');
     if (response == false) {
-      addError(error: 'request failed');
+      addError(error: 'invalid account');
       return;
     }
+    removeError(error: 'invalid account');
+
     var body = json.decode(response.body);
-    print(body['user']);
+
+    // save in DB
+    _myBox.put('token', body['token'].toString());
+    _myBox.put('user', UserDB.parseUser(body));
+  }
+
+  @override
+  void initState() {
+    // print("tokenDB-> " + user.token);
+    super.initState();
   }
 
 //build
@@ -73,12 +87,6 @@ class _LoginPageState extends State<LoginPage> {
       body: SafeArea(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: getWidth(19)),
-          // img bg not solved yet
-          // decoration: BoxDecoration(
-          //   image: DecorationImage(
-          //     image: AssetImage('assets/svg/bg_login.svg'),
-          //   ),
-          // ),
           child: ListView(
             children: [
               Form(
@@ -179,6 +187,16 @@ class _LoginPageState extends State<LoginPage> {
                       function: () {
                         if (formKey.currentState.validate()) {
                           _login();
+                          if (_myBox.get('token') != null) {
+                            setState(() {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MainPage()));
+                            });
+                          } else {
+                            addError(error: 'cannot login');
+                          }
                         }
                       },
                     ),
