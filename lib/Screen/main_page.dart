@@ -13,6 +13,7 @@ import 'package:podcast_app/Screen/soon_page.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({Key? key}) : super(key: key);
+  static String routerName = '/MainPage';
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -79,10 +80,10 @@ class _MainPageState extends State<MainPage> {
   }
 
   void go_2_soon(BuildContext context) {
-    setState(() {});
-
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return SoonPage();
-    }));
+    setState(() {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+        return SoonPage();
+      }));
+    });
   }
 }

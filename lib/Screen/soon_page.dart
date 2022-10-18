@@ -13,6 +13,7 @@ import 'package:podcast_app/Screen/home_page.dart';
 
 class SoonPage extends StatefulWidget {
   SoonPage({Key? key}) : super(key: key);
+  static String routerName = '/SoonPage';
 
   @override
   State<SoonPage> createState() => _SoonPageState();
