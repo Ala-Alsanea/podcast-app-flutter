@@ -1,7 +1,8 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, unused_field
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, unused_field, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:podcast_app/Config/components/bottom_app_bar.dart';
 import 'package:podcast_app/Config/components/bottom_app_bar_item.dart';
 import 'package:podcast_app/Config/components/bottom_bar.dart';
@@ -9,6 +10,8 @@ import 'package:podcast_app/Config/size_config.dart';
 import 'package:podcast_app/Config/style.dart';
 import 'package:podcast_app/Screen/explore_page.dart';
 import 'package:podcast_app/Screen/home_page.dart';
+import 'package:podcast_app/Screen/login_page.dart';
+import 'package:podcast_app/Screen/profile_page.dart';
 import 'package:podcast_app/Screen/soon_page.dart';
 
 class MainPage extends StatefulWidget {
@@ -20,11 +23,28 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  final _myBox = Hive.box('mybox');
+
   static int _index = 0;
+
   final List _pages = [
     HomePage(),
     ExplorePage(),
+    Container(),
+    Container(),
+    ProfilePage()
   ];
+
+  @override
+  void initState() {
+    if (_myBox.get('token') == null) {
+      setState(() {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => LoginPage()));
+      });
+    }
+    super.initState();
+  }
 
   //
   @override
@@ -66,11 +86,11 @@ class _MainPageState extends State<MainPage> {
       bottomNavigationBar: BottomBar(
         bottomNu: _index,
         callBack: (index) {
-          if (index == 2 || index == 3 || index == 4) {
+          if (index == 2 || index == 3) {
             go_2_soon(context);
             return;
           }
-
+          print(_pages.length);
           setState(() {
             _index = index;
           });

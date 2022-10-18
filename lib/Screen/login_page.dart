@@ -184,9 +184,9 @@ class _LoginPageState extends State<LoginPage> {
                     BtnArea(
                       icon: SvgPicture.asset('assets/svg/next-page-shadow.svg',
                           width: getHeight(150)),
-                      function: () {
+                      function: () async {
                         if (formKey.currentState.validate()) {
-                          _login();
+                          await _login();
                           if (_myBox.get('token') != null) {
                             setState(() {
                               Navigator.pushReplacement(

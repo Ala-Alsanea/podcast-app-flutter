@@ -32,15 +32,16 @@ class ConnectApi {
   }
 //
 
-  postData({data, entryPoint = ""}) async {
+  postData({data = '', entryPoint = "", token = ''}) async {
     print(_localUrl + entryPoint);
 
     //
     http.Response response = await http.post(
       Uri.parse(_localUrl + entryPoint),
       body: jsonEncode(data),
-      headers: _setHeader(),
+      headers: _setHeader(token: token),
     );
+    //
     try {
       print("state-> " + response.statusCode.toString());
       if (response.statusCode == 200) {

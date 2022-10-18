@@ -1,8 +1,11 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, sort_child_properties_last, prefer_const_literals_to_create_immutables, avoid_print
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, sort_child_properties_last, prefer_const_literals_to_create_immutables, avoid_print, unused_element, prefer_interpolation_to_compose_strings
+
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/svg.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:podcast_app/Config/components/FromError.dart';
 import 'package:podcast_app/Config/components/login_signin_stuff.dart';
 import 'package:podcast_app/Config/components/text_input.dart';
@@ -11,6 +14,8 @@ import 'package:podcast_app/Config/style.dart';
 import 'package:podcast_app/Config/validation_error_msg.dart';
 import 'package:podcast_app/Screen/login_page.dart';
 import 'package:podcast_app/Screen/main_page.dart';
+import 'package:podcast_app/api/ConnectApi.dart';
+import 'package:podcast_app/localDB/userDB.dart';
 
 class SignInPage extends StatefulWidget {
   SignInPage({Key? key}) : super(key: key);
@@ -27,6 +32,7 @@ class _SignInPageState extends State<SignInPage> {
   final emailCtrl = TextEditingController();
   final passwdCtrl = TextEditingController();
   final rePasswdCtrl = TextEditingController();
+  final _myBox = Hive.box('mybox');
 
 // function
   void addError({String? error}) {
@@ -45,6 +51,34 @@ class _SignInPageState extends State<SignInPage> {
     }
   }
 
+  _signin() async {
+    var data = {
+      'username': usernameCtrl.text,
+      'email': emailCtrl.text,
+      'password': passwdCtrl.text,
+      'password_confirmation': rePasswdCtrl.text
+    };
+// make post request
+    var response =
+        await ConnectApi().postData(data: data, entryPoint: 'signin');
+    if (response == false) {
+      addError(
+        error: 'account already exists',
+      );
+      return;
+    }
+    removeError(error: 'account already exists');
+
+    var body = json.decode(response.body);
+
+    // print(body);
+    // return;
+
+    // save in DB
+    _myBox.put('token', body['token'].toString());
+    _myBox.put('user', UserDB.parseUser(body));
+  }
+
 //build
   @override
   Widget build(BuildContext context) {
@@ -55,12 +89,6 @@ class _SignInPageState extends State<SignInPage> {
       body: SafeArea(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: getWidth(19)),
-          // img bg not solved yet
-          // decoration: BoxDecoration(
-          //   image: DecorationImage(
-          //     image: AssetImage('assets/svg/bg_login.svg'),
-          //   ),
-          // ),
           child: ListView(
             children: [
               Form(
@@ -122,6 +150,7 @@ class _SignInPageState extends State<SignInPage> {
                           context,
                           'Email Address',
                           controller: emailCtrl,
+                          keyboardType: TextInputType.emailAddress,
                           color: blue,
                           icon: Icons.email,
                           validator: (value) {
@@ -192,6 +221,26 @@ class _SignInPageState extends State<SignInPage> {
                           color: blue,
                           icon: Icons.password,
                           passwd: passwdHidden,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              addError(error: msgPasswdDontMatch);
+                              return "";
+                            } else if (value != passwdCtrl.text) {
+                              addError(error: msgPasswdDontMatch);
+                              return "";
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            if (value.isNotEmpty) {
+                              removeError(error: msgPasswdDontMatch);
+                              return "";
+                            } else if (value == passwdCtrl.text) {
+                              removeError(error: msgPasswdDontMatch);
+                              return "";
+                            }
+                            return null;
+                          },
                         ),
                       ],
                     ),
@@ -202,21 +251,27 @@ class _SignInPageState extends State<SignInPage> {
                     BtnArea(
                       icon: SvgPicture.asset('assets/svg/next-page-shadow.svg',
                           width: getHeight(150)),
-                      function: () {
-                        print(usernameCtrl.text);
-
-                        //
-
+                      function: () async {
                         if (formKey.currentState.validate()) {
-                          setState(() {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (BuildContext context) {
-                                  return MainPage();
-                                },
-                              ),
-                            );
-                          });
+                          //
+                          await _signin();
+                          await Future.delayed(
+                              Duration(milliseconds: 2600), () {});
+                          print("sign-> ");
+                          print("tokenDB-> " + _myBox.get('token').toString());
+
+                          if (_myBox.get('token') != null) {
+                            setState(() {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MainPage()));
+                            });
+                          } else {
+                            addError(error: 'cannot sign in');
+                          }
+                        } else {
+                          print("not valid-> ");
                         }
                       },
                     ),

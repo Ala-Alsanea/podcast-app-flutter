@@ -5,14 +5,14 @@ import 'package:hive_flutter/hive_flutter.dart';
 class UserDB {
   String token = "";
   Map user = {};
-  final _myBox = Hive.box('mybox');
+  final myBox = Hive.box('mybox');
 
   setToken() {
-    _myBox.put('token', this.token);
+    myBox.put('token', this.token);
   }
 
   getToken() {
-    this.token = _myBox.get('token');
+    this.token = myBox.get('token');
   }
 
   static parseUser(data) => {
@@ -20,4 +20,9 @@ class UserDB {
         'email': data['user']['email'],
         'username': data['user']['username'],
       };
+
+  clearDB() {
+    myBox.delete('token');
+    myBox.delete('user');
+  }
 }

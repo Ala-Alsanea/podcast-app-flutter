@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, unused_field, prefer_const_constructors_in_immutables, non_constant_identifier_names, sort_child_properties_last
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, unused_field, prefer_const_constructors_in_immutables, non_constant_identifier_names, sort_child_properties_last, avoid_print
 
 import 'dart:convert';
 
@@ -33,34 +33,30 @@ class _HomePageState extends State<HomePage> {
 
 // fun
 
-  getPodcast() {
-    ConnectApi()
-        .getAllData(entryPoint: 'allPodcasts', token: _myBox.get('token'))
-        .then((respond) {
-      List list = json.decode(respond.body);
-      podcast = list.map((e) => PodcastModel.fromJson(e)).toList();
-      // _new = podcast.;
+  getPodcast() async {
+    var respond = await ConnectApi()
+        .getAllData(entryPoint: 'allPodcasts', token: _myBox.get('token'));
 
-      print(podcast.length);
-    });
+    List list = await json.decode(respond.body);
+    podcast = list.map((e) => PodcastModel.fromJson(e)).toList();
+
+    print(podcast.length);
   }
 
 //
   @override
   void initState() {
-    setState(() {
-      getPodcast();
-      //
-      // print(podcast.length);
-    });
+    getPodcast();
 
     super.initState();
   }
+
   // @override
 
   @override
   Widget build(BuildContext context) {
     SizeOfConfig().init(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
