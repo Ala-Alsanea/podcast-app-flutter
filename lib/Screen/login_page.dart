@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, sort_child_properties_last, prefer_const_literals_to_create_immutables, avoid_print
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/svg.dart';
@@ -12,6 +14,7 @@ import 'package:podcast_app/Screen/home_page.dart';
 import 'package:podcast_app/Screen/main_page.dart';
 import 'package:podcast_app/Screen/signin_page.dart';
 import 'package:podcast_app/Config/validation_error_msg.dart';
+import 'package:podcast_app/api/ConnectApi.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -23,6 +26,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   //var
   dynamic formKey = GlobalKey<FormState>();
+  final emailCtrl = TextEditingController();
+  final passwdCtrl = TextEditingController();
   final List<String?> errors = [];
 
 // function
@@ -41,6 +46,21 @@ class _LoginPageState extends State<LoginPage> {
         errors.remove(error);
       });
     }
+  }
+
+  _login() async {
+    var data = {
+      'email': emailCtrl.text,
+      'password': passwdCtrl.text,
+    };
+
+    var response = await ConnectApi().postData(data: data, entryPoint: 'login');
+    if (response == false) {
+      addError(error: 'request failed');
+      return;
+    }
+    var body = json.decode(response.body);
+    print(body['user']);
   }
 
 //build
@@ -90,6 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                         text_input(
                           context,
                           'Email Address',
+                          controller: emailCtrl,
                           color: blue,
                           icon: Icons.email,
                           validator: (value) {
@@ -116,6 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                         text_input(
                           context,
                           'Password',
+                          controller: passwdCtrl,
                           color: blue,
                           passwd: passwdHidden,
                           icon: Icons.lock,
@@ -156,15 +178,7 @@ class _LoginPageState extends State<LoginPage> {
                           width: getHeight(150)),
                       function: () {
                         if (formKey.currentState.validate()) {
-                          setState(() async {
-                            await Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (BuildContext context) {
-                                  return MainPage();
-                                },
-                              ),
-                            );
-                          });
+                          _login();
                         }
                       },
                     ),

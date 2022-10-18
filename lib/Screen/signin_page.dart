@@ -23,10 +23,10 @@ class _SignInPageState extends State<SignInPage> {
   //var
   dynamic formKey = GlobalKey<FormState>();
   final List<String?> errors = [];
-  final _emailCtrl = TextEditingController();
-  final _usernameCtrl = TextEditingController();
-  final _passwdCtrl = TextEditingController();
-  final _rePasswdCtrl = TextEditingController();
+  final usernameCtrl = TextEditingController();
+  final emailCtrl = TextEditingController();
+  final passwdCtrl = TextEditingController();
+  final rePasswdCtrl = TextEditingController();
 
 // function
   void addError({String? error}) {
@@ -97,7 +97,7 @@ class _SignInPageState extends State<SignInPage> {
                         text_input(
                           context,
                           'Username',
-                          controller: _usernameCtrl,
+                          controller: usernameCtrl,
                           color: blue,
                           icon: Icons.person,
                           validator: (value) {
@@ -121,7 +121,7 @@ class _SignInPageState extends State<SignInPage> {
                         text_input(
                           context,
                           'Email Address',
-                          controller: _emailCtrl,
+                          controller: emailCtrl,
                           color: blue,
                           icon: Icons.email,
                           validator: (value) {
@@ -146,7 +146,7 @@ class _SignInPageState extends State<SignInPage> {
                         text_input(
                           context,
                           'Password',
-                          controller: _passwdCtrl,
+                          controller: passwdCtrl,
                           color: blue,
                           passwd: passwdHidden,
                           icon: Icons.password,
@@ -188,7 +188,7 @@ class _SignInPageState extends State<SignInPage> {
                         text_input(
                           context,
                           'Re-Password',
-                          controller: _rePasswdCtrl,
+                          controller: rePasswdCtrl,
                           color: blue,
                           icon: Icons.password,
                           passwd: passwdHidden,
@@ -203,7 +203,7 @@ class _SignInPageState extends State<SignInPage> {
                       icon: SvgPicture.asset('assets/svg/next-page-shadow.svg',
                           width: getHeight(150)),
                       function: () {
-                        print(_usernameCtrl.text);
+                        print(usernameCtrl.text);
 
                         //
 
