@@ -119,6 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                           context,
                           'Email Address',
                           controller: emailCtrl,
+                          keyboardType: TextInputType.emailAddress,
                           color: blue,
                           icon: Icons.email,
                           validator: (value) {

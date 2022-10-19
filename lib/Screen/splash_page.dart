@@ -18,13 +18,9 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   final _myBox = Hive.box('mybox');
+  var user = UserDB();
 
   // function
-
-  _clearDB() {
-    _myBox.delete('token');
-    _myBox.delete('user');
-  }
 
   void _toNextPage(var page) async {
     await Future.delayed(Duration(milliseconds: 2600), () {});
@@ -39,7 +35,7 @@ class _SplashPageState extends State<SplashPage> {
   //
   @override
   void initState() {
-    // _clearDB();
+    // user.clearDB();
     print("tokenDB-> " + _myBox.get('token').toString());
     print("userDB-> " + _myBox.get('user').toString());
     if (_myBox.get('token') == null) {

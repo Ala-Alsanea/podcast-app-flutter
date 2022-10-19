@@ -63,11 +63,11 @@ class _SignInPageState extends State<SignInPage> {
         await ConnectApi().postData(data: data, entryPoint: 'signin');
     if (response == false) {
       addError(
-        error: 'account already exists',
+        error: 'cannot sign in',
       );
       return;
     }
-    removeError(error: 'account already exists');
+    removeError(error: 'cannot sign in');
 
     var body = json.decode(response.body);
 
@@ -255,8 +255,7 @@ class _SignInPageState extends State<SignInPage> {
                         if (formKey.currentState.validate()) {
                           //
                           await _signin();
-                          await Future.delayed(
-                              Duration(milliseconds: 2600), () {});
+
                           print("sign-> ");
                           print("tokenDB-> " + _myBox.get('token').toString());
 

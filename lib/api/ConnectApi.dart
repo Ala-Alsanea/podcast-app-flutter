@@ -36,13 +36,14 @@ class ConnectApi {
     print(_localUrl + entryPoint);
 
     //
-    http.Response response = await http.post(
-      Uri.parse(_localUrl + entryPoint),
-      body: jsonEncode(data),
-      headers: _setHeader(token: token),
-    );
-    //
     try {
+      http.Response response = await http.post(
+        Uri.parse(_localUrl + entryPoint),
+        body: jsonEncode(data),
+        headers: _setHeader(token: token),
+      );
+      //
+
       print("state-> " + response.statusCode.toString());
       if (response.statusCode == 200) {
         return response;
@@ -50,6 +51,7 @@ class ConnectApi {
       return false;
     } catch (e) {
       print(e);
+      // print('connection filed');
       return false;
     }
   }

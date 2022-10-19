@@ -37,6 +37,9 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState() {
+    setState(() {
+      _index = 0;
+    });
     if (_myBox.get('token') == null) {
       setState(() {
         Navigator.pushReplacement(
@@ -56,7 +59,11 @@ class _MainPageState extends State<MainPage> {
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: getWidth(19)),
         child: SafeArea(
-          child: _pages[_index],
+          child: SizedBox(
+            child: Container(
+              child: _pages[_index],
+            ),
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

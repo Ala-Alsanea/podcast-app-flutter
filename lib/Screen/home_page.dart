@@ -33,17 +33,6 @@ class _HomePageState extends State<HomePage> {
 
 // fun
 
-  getPodcast() async {
-    var respond = await ConnectApi()
-        .getAllData(entryPoint: 'allPodcasts', token: _myBox.get('token'));
-
-    List list = await json.decode(respond.body);
-    podcast = list.map((e) => PodcastModel.fromJson(e)).toList();
-
-    print(podcast.length);
-  }
-
-//
   @override
   void initState() {
     getPodcast();
@@ -51,93 +40,137 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
+  getPodcast() async {
+    var respond = await ConnectApi()
+        .getAllData(entryPoint: 'allPodcasts', token: _myBox.get('token'));
+
+    List list = await json.decode(respond.body);
+    setState(() {
+      podcast = list.map((e) => PodcastModel.fromJson(e)).toList();
+    });
+
+    print(podcast.length);
+  }
+
+//
+
   // @override
 
   @override
   Widget build(BuildContext context) {
     SizeOfConfig().init(context);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        header(context, 'Home'),
-        SizedBox(height: getHeight(20)),
-        // new items
-        Container(
-          height: getHeight(170),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
+    return Container(
+      child: RefreshIndicator(
+        onRefresh: () async {
+          setState(() {
+            getPodcast();
+          });
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            header(context, 'Home'),
+            SizedBox(height: getHeight(20)),
+            // new items
+            Container(
+              height: getHeight(170),
+              child: Column(
                 children: [
-                  Text('New', style: bold_18()),
-                  // TextButton(
-                  //   onPressed: () {},
-                  //   child:
-                  //       Text('See More ...', style: normal_16(color: orange)),
-                  // )
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text('New', style: bold_18()),
+                      // TextButton(
+                      //   onPressed: () {},
+                      //   child:
+                      //       Text('See More ...', style: normal_16(color: orange)),
+                      // )
+                    ],
+                  ),
+                  Expanded(
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        BtnWithImgAndTwoText(
+                            img_size: 90, hor: 10, onPressed: () {}),
+                        BtnWithImgAndTwoText(
+                            img_size: 90, hor: 10, onPressed: () {}),
+                        BtnWithImgAndTwoText(
+                            img_size: 90, hor: 10, onPressed: () {}),
+                        BtnWithImgAndTwoText(
+                            img_size: 90, hor: 10, onPressed: () {}),
+                        BtnWithImgAndTwoText(
+                            img_size: 90, hor: 10, onPressed: () {}),
+                      ],
+                    ),
+                  ),
                 ],
               ),
-              Expanded(
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    BtnWithImgAndTwoText(
-                        img_size: 90, hor: 10, onPressed: () {}),
-                    BtnWithImgAndTwoText(
-                        img_size: 90, hor: 10, onPressed: () {}),
-                    BtnWithImgAndTwoText(
-                        img_size: 90, hor: 10, onPressed: () {}),
-                    BtnWithImgAndTwoText(
-                        img_size: 90, hor: 10, onPressed: () {}),
-                    BtnWithImgAndTwoText(
-                        img_size: 90, hor: 10, onPressed: () {}),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        //allPodcasts
-        SizedBox(height: getHeight(30)),
+            ),
+            //allPodcasts
+            SizedBox(height: getHeight(30)),
 
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            // mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('All', style: bold_18()),
-              Expanded(
-                child: Center(
-                  child: SingleChildScrollView(
-                    child: podcast.isEmpty
-                        ? CircularProgressIndicator.adaptive()
-                        : Column(
-                            // padding: EdgeInsets.fromLTRB(0, 10, 0, 30),
-                            // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            //     crossAxisCount: 2),
-                            children: podcast.map((pod) {
-                              return BtnWithImgAndTwoText(
-                                title: pod.title.length >= 30
-                                    ? pod.title.substring(0, 30) + ' ...'
-                                    : pod.title,
-                                author: pod.author.length >= 20
-                                    ? pod.author.substring(0, 20) + ' ...'
-                                    : pod.author,
-                                onPressed: () {
-                                  print(pod.id);
-                                },
-                              );
-                            }).toList(),
-                          ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('All', style: bold_18()),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          podcast.isEmpty
+                              ? Center(
+                                  child: Column(
+                                    children: [
+                                      SizedBox(height: getHeight(30)),
+                                      SizedBox(height: getHeight(30)),
+                                      SizedBox(height: getHeight(30)),
+                                      SizedBox(height: getHeight(30)),
+                                      SizedBox(height: getHeight(30)),
+                                      SizedBox(height: getHeight(30)),
+                                      CircularProgressIndicator.adaptive(),
+                                      SizedBox(height: getHeight(30)),
+                                      SizedBox(height: getHeight(30)),
+                                      SizedBox(height: getHeight(30)),
+                                      SizedBox(height: getHeight(30)),
+                                      SizedBox(height: getHeight(30)),
+                                      SizedBox(height: getHeight(30)),
+                                      SizedBox(height: getHeight(30)),
+                                    ],
+                                  ),
+                                )
+                              : Column(
+                                  // padding: EdgeInsets.fromLTRB(0, 10, 0, 30),
+                                  // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                  //     crossAxisCount: 2),
+                                  children: podcast.map((pod) {
+                                    return BtnWithImgAndTwoText(
+                                      title: pod.title.length >= 30
+                                          ? pod.title.substring(0, 30) + ' ...'
+                                          : pod.title,
+                                      author: pod.author.length >= 20
+                                          ? pod.author.substring(0, 20) + ' ...'
+                                          : pod.author,
+                                      onPressed: () {
+                                        print(pod.id);
+                                      },
+                                    );
+                                  }).toList(),
+                                ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
-        )
-      ],
+            )
+          ],
+        ),
+      ),
     );
   }
 }
