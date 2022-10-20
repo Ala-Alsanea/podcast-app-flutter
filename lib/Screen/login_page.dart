@@ -124,9 +124,10 @@ class _LoginPageState extends State<LoginPage> {
                           icon: Icons.email,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              addError(
-                                error: msgEmailEmpty,
-                              );
+                              addError(error: msgEmailEmpty);
+                              return "";
+                            } else if (!regExpEmailValidator.hasMatch(value)) {
+                              addError(error: msgValidEmailError);
                               return "";
                             }
                             return null;
@@ -134,7 +135,10 @@ class _LoginPageState extends State<LoginPage> {
                           onChanged: (value) {
                             if (value.isNotEmpty) {
                               removeError(error: msgEmailEmpty);
-                              return "";
+                              if (regExpEmailValidator.hasMatch(value)) {
+                                removeError(error: msgValidEmailError);
+                                return "";
+                              }
                             }
                           },
                         ),
@@ -187,6 +191,7 @@ class _LoginPageState extends State<LoginPage> {
                           width: getHeight(150)),
                       function: () async {
                         if (formKey.currentState.validate()) {
+                          print('login-> ');
                           await _login();
                           if (_myBox.get('token') != null) {
                             setState(() {

@@ -27,6 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
 // var
   final _myBox = Hive.box('mybox');
   var user = UserDB();
+  // var username =_myBox.get('user')['username'];
 
 // fun
   _logout() async {
@@ -47,22 +48,47 @@ class _ProfilePageState extends State<ProfilePage> {
         SizedBox(height: getHeight(20)),
         //
 
-        ElevatedButton(
-            style: ElevatedButton.styleFrom(primary: Colors.red),
-            onPressed: () async {
-              _logout();
-              user.clearDB();
+        // info
+        Row(
+          children: [
+            Container(child: Icon(Icons.person, color: white, size: 80)),
+            SizedBox(width: getWidth(10)),
+            _myBox.get('user') != null
+                ? Column(
+                    children: [
+                      Text(_myBox.get('user')['username'].toString(),
+                          style: bold_24()),
+                      Text(_myBox.get('user')['email'].toString(),
+                          style: bold_24()),
+                    ],
+                  )
+                : Column(),
+          ],
+        ),
 
-              print("tokenDB-> " + _myBox.get('token').toString());
+        SizedBox(height: getHeight(20)),
 
-              if (_myBox.get('token') == null) {
-                setState(() {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => LoginPage()));
-                });
-              }
-            },
-            child: Text('Logout'))
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(primary: Colors.red),
+                onPressed: () async {
+                  _logout();
+                  user.clearDB();
+
+                  print("tokenDB-> " + _myBox.get('token').toString());
+
+                  if (_myBox.get('token') == null) {
+                    setState(() {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => LoginPage()));
+                    });
+                  }
+                },
+                child: Text('Logout')),
+          ],
+        )
       ],
     );
   }

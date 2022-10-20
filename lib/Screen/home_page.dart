@@ -72,44 +72,44 @@ class _HomePageState extends State<HomePage> {
           children: [
             header(context, 'Home'),
             SizedBox(height: getHeight(20)),
-            // new items
-            Container(
-              height: getHeight(170),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text('New', style: bold_18()),
-                      // TextButton(
-                      //   onPressed: () {},
-                      //   child:
-                      //       Text('See More ...', style: normal_16(color: orange)),
-                      // )
-                    ],
-                  ),
-                  Expanded(
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        BtnWithImgAndTwoText(
-                            img_size: 90, hor: 10, onPressed: () {}),
-                        BtnWithImgAndTwoText(
-                            img_size: 90, hor: 10, onPressed: () {}),
-                        BtnWithImgAndTwoText(
-                            img_size: 90, hor: 10, onPressed: () {}),
-                        BtnWithImgAndTwoText(
-                            img_size: 90, hor: 10, onPressed: () {}),
-                        BtnWithImgAndTwoText(
-                            img_size: 90, hor: 10, onPressed: () {}),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            //allPodcasts
+            // // new items
+            // Container(
+            //   height: getHeight(170),
+            //   child: Column(
+            //     children: [
+            //       Row(
+            //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //         crossAxisAlignment: CrossAxisAlignment.center,
+            //         children: [
+            //           Text('New', style: bold_18()),
+            //           // TextButton(
+            //           //   onPressed: () {},
+            //           //   child:
+            //           //       Text('See More ...', style: normal_16(color: orange)),
+            //           // )
+            //         ],
+            //       ),
+            //       Expanded(
+            //         child: ListView(
+            //           scrollDirection: Axis.horizontal,
+            //           children: [
+            //             BtnWithImgAndTwoText(
+            //                 img_size: 90, hor: 10, onPressed: () {}),
+            //             BtnWithImgAndTwoText(
+            //                 img_size: 90, hor: 10, onPressed: () {}),
+            //             BtnWithImgAndTwoText(
+            //                 img_size: 90, hor: 10, onPressed: () {}),
+            //             BtnWithImgAndTwoText(
+            //                 img_size: 90, hor: 10, onPressed: () {}),
+            //             BtnWithImgAndTwoText(
+            //                 img_size: 90, hor: 10, onPressed: () {}),
+            //           ],
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // //allPodcasts
             SizedBox(height: getHeight(30)),
 
             Expanded(

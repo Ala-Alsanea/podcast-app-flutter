@@ -25,4 +25,10 @@ class UserDB {
     myBox.delete('token');
     myBox.delete('user');
   }
+
+  allClearDB() {
+    myBox.delete('token');
+    myBox.delete('user');
+    myBox.delete('intro');
+  }
 }

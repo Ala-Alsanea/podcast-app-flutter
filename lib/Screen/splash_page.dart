@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:podcast_app/Config/size_config.dart';
-import 'package:podcast_app/Screen/home_page.dart';
+import 'package:podcast_app/Screen/intro_page.dart';
 import 'package:podcast_app/Screen/login_page.dart';
 import 'package:podcast_app/Screen/main_page.dart';
 import 'package:podcast_app/localDB/userDB.dart';
@@ -35,10 +35,19 @@ class _SplashPageState extends State<SplashPage> {
   //
   @override
   void initState() {
-    // user.clearDB();
-    print("tokenDB-> " + _myBox.get('token').toString());
+    // clear local DB
+    // user.allClearDB();
     print("userDB-> " + _myBox.get('user').toString());
+    //
     if (_myBox.get('token') == null) {
+      print("tokenDB-> " + _myBox.get('token').toString());
+
+      if (_myBox.get('intro') == null) {
+        print("introDB-> " + _myBox.get('intro').toString());
+
+        _toNextPage(IntroPage());
+        return;
+      }
       _toNextPage(LoginPage());
     } else {
       _toNextPage(MainPage());

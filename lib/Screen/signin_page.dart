@@ -132,13 +132,18 @@ class _SignInPageState extends State<SignInPage> {
                             if (value!.isEmpty) {
                               addError(error: msgUsernameEmpty);
                               return '';
+                            } else if (value.length < 4) {
+                              addError(error: msgUsernameLength);
+                              return "";
                             }
                             return null;
                           },
                           onChanged: (value) {
                             if (value.isNotEmpty) {
                               removeError(error: msgUsernameEmpty);
-                              return "";
+                              if (value.length >= 4) {
+                                removeError(error: msgUsernameLength);
+                              }
                             }
                           },
                         ),
@@ -157,12 +162,18 @@ class _SignInPageState extends State<SignInPage> {
                             if (value!.isEmpty) {
                               addError(error: msgEmailEmpty);
                               return '';
+                            } else if (!regExpEmailValidator.hasMatch(value)) {
+                              addError(error: msgValidEmailError);
+                              return "";
                             }
                             return null;
                           },
                           onChanged: (value) {
                             if (value.isNotEmpty) {
                               removeError(error: msgEmailEmpty);
+                              return "";
+                            } else if (regExpEmailValidator.hasMatch(value)) {
+                              removeError(error: msgValidEmailError);
                               return "";
                             }
                           },
@@ -274,6 +285,8 @@ class _SignInPageState extends State<SignInPage> {
                         }
                       },
                     ),
+                    SizedBox(height: getHeight(5)),
+
                     FormError(errors: errors),
 
                     SizedBox(height: getHeight(0)),
